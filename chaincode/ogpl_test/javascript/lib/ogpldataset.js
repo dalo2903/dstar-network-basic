@@ -78,7 +78,7 @@ class OGPLDataset extends Contract {
                 createdtimestamp,
                 lastmodifiedtimestamp,
                 checksum
-            },
+            }
 
         await ctx.stub.putState(datasetNumber, Buffer.from(JSON.stringify(dataset)));
         console.info('============= END : Create Dataset ===========');

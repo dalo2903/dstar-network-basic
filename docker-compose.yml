@@ -80,9 +80,11 @@ services:
       # match the username and password set for the associated CouchDB.
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+      # dev mode
+      #- ORDERER_GENERAL_GENESISPROFILE=SampleDevModeSolo
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
-    # command: peer node start --peer-chaincodedev=true
+    #command: peer node start --peer-chaincodedev=true
     ports:
       - 7051:7051
       - 7053:7053
@@ -130,7 +132,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
-    # command: peer node start --peer-chaincodedev=true
+    #command: peer node start --peer-chaincodedev=true
     ports:
       - 8051:7051
       - 8053:7053
@@ -175,7 +177,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
-    # command: peer node start --peer-chaincodedev=true
+    #command: peer node start --peer-chaincodedev=true
     ports:
       - 9051:7051
       - 9053:7053
@@ -247,6 +249,7 @@ services:
         - /var/run/:/host/var/run/
         - ./chaincode/:/opt/gopath/src/github.com/
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./config:/opt/gopath/src/github.com/hyperledger/fabric/peer/configtx/
     networks:
         - dstar-net
     #depends_on:

@@ -34,3 +34,5 @@ Join tokens can be get by typing the following command on the init PC:
 `docker-compose -f docker-compose.yml up -d peer1.org1.dstar.com couchdb1`
 *PC3: 
 `docker-compose -f docker-compose.yml up -d peer2.org1.dstar.com couchdb2`
+###Stoping
+`docker-compose -f docker-compose.yml down --volumes --remove-orphans`
