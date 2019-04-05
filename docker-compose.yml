@@ -97,18 +97,7 @@ services:
     networks:
       - dstar-net
 
-  couchdb1:
-    container_name: couchdb1
-    image: hyperledger/fabric-couchdb
-    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
-    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
-    environment:
-      - COUCHDB_USER=
-      - COUCHDB_PASSWORD=
-    ports:
-      - 6984:5984
-    networks:
-      - dstar-net
+  
 
   peer1.org1.dstar.com:
     container_name: peer1.org1.dstar.com
@@ -143,8 +132,8 @@ services:
     command: peer node start
     # command: peer node start --peer-chaincodedev=true
     ports:
-      - 9051:7051
-      - 9053:7053
+      - 8051:7051
+      - 8053:7053
     volumes:
         - /var/run/:/host/var/run/
         - ./crypto-config/peerOrganizations/org1.dstar.com/peers/peer1.org1.dstar.com/msp:/etc/hyperledger/msp/peer
@@ -165,13 +154,20 @@ services:
       - CORE_CHAINCODE_LOGGING_LEVEL=info
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
-      - CORE_PEER_ADDRESS=peer2.org1.dstar.com:9051
+      - CORE_PEER_ADDRESS=peer2.org1.dstar.com:7051
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
       # # https://docs.docker.com/compose/networking/
+      - CORE_PEER_COMMITTER_LEDGER_ORDERER=orderer.dstar.com:7050
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.dstar.com:7051
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=dstar-net
+      - CORE_PEER_NETWORKID = peer2.org1.dstar.com
+      - CORE_PEER_GOSSIP_IGNORESECURITY=true
+      - CORE_PEER_GOSSIP_ORGLEADER=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=false
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.dstar.com:7051
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
       # provide the credentials for ledger to connect to CouchDB.  The username and password must
       # match the username and password set for the associated CouchDB.
@@ -181,8 +177,8 @@ services:
     command: peer node start
     # command: peer node start --peer-chaincodedev=true
     ports:
-      - 9051:9051
-      - 9053:9053
+      - 9051:7051
+      - 9053:7053
     volumes:
         - /var/run/:/host/var/run/
         - ./crypto-config/peerOrganizations/org1.dstar.com/peers/peer2.org1.dstar.com/msp:/etc/hyperledger/msp/peer
@@ -193,18 +189,7 @@ services:
     networks:
       - dstar-net
 
-  couchdb2:
-    container_name: couchdb2
-    image: hyperledger/fabric-couchdb
-    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
-    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
-    environment:
-      - COUCHDB_USER=
-      - COUCHDB_PASSWORD=
-    ports:
-      - 7984:5984
-    networks:
-      - dstar-net
+  ## COUCHDB SERVICES
   couchdb0:
     container_name: couchdb0
     image: hyperledger/fabric-couchdb
@@ -217,7 +202,32 @@ services:
       - 5984:5984
     networks:
       - dstar-net
-    
+  couchdb1:
+    container_name: couchdb1
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 6984:5984
+    networks:
+      - dstar-net
+  couchdb2:
+    container_name: couchdb2
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 7984:5984
+    networks:
+      - dstar-net
+
+  ##CLI
   cli:
     container_name: cli
     image: hyperledger/fabric-tools

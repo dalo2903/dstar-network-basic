@@ -29,7 +29,7 @@ Join tokens can be get by typing the following command on the init PC:
 `docker swarm join-token manager`
 4. Create docker containers from `docker-compose.yml` file.
 *PC1:
-`docker-compose -f docker-compose.yml up -d ca.dstar.com orderer.dstar.com peer0.org1.dstar.com couchdb0`
+`docker-compose -f docker-compose.yml up -d cli ca.dstar.com orderer.dstar.com peer0.org1.dstar.com couchdb0`
 *PC2:
 `docker-compose -f docker-compose.yml up -d peer1.org1.dstar.com couchdb1`
 *PC3: 
